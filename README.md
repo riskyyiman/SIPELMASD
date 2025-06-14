@@ -1,0 +1,4 @@
+- Buat folder lalu ketik " cmd "
+-  lalu di terminal paste : git clone https://github.com/riskyyiman/SIPELMASD.git
+- selanjutnya : npm install
+- run project : npm run dev
