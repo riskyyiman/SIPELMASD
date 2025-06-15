@@ -15,6 +15,7 @@ export default function SignUpForm() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('masyarakat'); // New role state
   const navigate = useNavigate();
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -31,11 +32,35 @@ export default function SignUpForm() {
     }
 
     try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      await updateProfile(userCredential.user, {
-        displayName: `${firstName} ${lastName}`,
-      });
-      navigate('/');
+      if (role === 'masyarakat') {
+        // Firebase register
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await updateProfile(userCredential.user, {
+          displayName: `${firstName} ${lastName}`,
+        });
+        navigate('/');
+      } else {
+        // Admin / Petugas via Backend
+        const res = await fetch('http://localhost:5000/api/auth/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            firstName,
+            lastName,
+            email,
+            password,
+            role,
+          }),
+        });
+
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem('token', data.token);
+          navigate('/');
+        } else {
+          alert(data.message || 'Registration failed');
+        }
+      }
     } catch (error: any) {
       alert(error.message || 'Something went wrong.');
     }
@@ -126,6 +151,18 @@ export default function SignUpForm() {
                     {showPassword ? <EyeIcon className="fill-gray-500 dark:fill-gray-400 size-5" /> : <EyeCloseIcon className="fill-gray-500 dark:fill-gray-400 size-5" />}
                   </span>
                 </div>
+              </div>
+
+              {/* Role Selection */}
+              <div>
+                <Label>
+                  Register as <span className="text-error-500">*</span>
+                </Label>
+                <select value={role} onChange={(e) => setRole(e.target.value)} className="w-full px-3 py-2 border rounded-lg dark:bg-gray-800 dark:text-white">
+                  <option value="masyarakat">Masyarakat</option>
+                  <option value="admin">Admin</option>
+                  <option value="petugas">Petugas</option>
+                </select>
               </div>
 
               <div className="flex items-center gap-3">
