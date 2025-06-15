@@ -13,7 +13,7 @@ export default function SignInForm() {
   const [isChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('staff');
+  const [] = useState('staff');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -45,15 +45,11 @@ export default function SignInForm() {
         localStorage.setItem('email', data.user.email);
         localStorage.setItem('role', data.user.role);
 
-        const dest = data.user.role === 'admin' ? '/' : data.user.role === 'petugas' ? '/' : '/';
+        const dest = data.user.role === 'admin' ? '/home' : data.user.role === 'petugas' ? '/' : '/';
 
         navigate(dest);
         return;
       }
-
-      // 2) Jika backend gagal, fallback ke Firebase
-      const firebaseUser = await signInWithEmailAndPassword(auth, email, password);
-
       // Reload user untuk memastikan displayName sudah ter-update
       await auth.currentUser?.reload();
       const user = auth.currentUser;
@@ -76,7 +72,7 @@ export default function SignInForm() {
     <div className="flex flex-col flex-1">
       <div className="w-full max-w-md pt-10 mx-auto">
         <Link to="/" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-          <ChevronLeftIcon className="size-5" /> Back to dashboard
+          <ChevronLeftIcon className="size-5" /> Back to Home
         </Link>
       </div>
 
