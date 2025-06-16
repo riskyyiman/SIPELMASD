@@ -18,10 +18,7 @@ import Blank from './pages/Blank';
 import AppLayout from './layout/AppLayout';
 import { ScrollToTop } from './components/common/ScrollToTop';
 import Home from './pages/Dashboard/Home';
-import Laporan from './pages/Pengaduan/laporan';
-import LaporanSaya from './pages/Pengaduan/LaporanSaya';
-import BuatLaporan from './pages/Pengaduan/BuatLaporan';
-import Riwayat from './pages/Pengaduan/Riwayat';
+import PengaduanRoutes from './pages/PengaduanUser';
 import LandingPage from './pages/LandingPage';
 
 export default function App() {
@@ -47,12 +44,6 @@ export default function App() {
           {/* Tables */}
           <Route path="/basic-tables" element={<BasicTables />} />
 
-          {/* Pengaduan */}
-          <Route path="/laporan" element={<Laporan />} />
-          <Route path="/laporan-saya" element={<LaporanSaya />} />
-          <Route path="/buat-laporan" element={<BuatLaporan />} />
-          <Route path="/riwayat" element={<Riwayat />} />
-
           {/* UI Elements */}
           <Route path="/alerts" element={<Alerts />} />
           <Route path="/avatars" element={<Avatars />} />
@@ -65,6 +56,9 @@ export default function App() {
           <Route path="/line-chart" element={<LineChart />} />
           <Route path="/bar-chart" element={<BarChart />} />
         </Route>
+
+        {/* ✅ Standalone Pengaduan Routes (outside dashboard layout) */}
+        <Route path="/pengaduan/*" element={<PengaduanRoutes />} />
 
         {/* Auth Pages */}
         <Route path="/signin" element={<SignIn />} />

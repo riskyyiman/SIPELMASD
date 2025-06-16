@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../components/ui/button/Button';
 import HeroIllustration from '../../public/images/hero/HeroSections.svg';
+import { motion } from 'framer-motion';
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
@@ -36,43 +37,130 @@ export default function LandingPage() {
       </header>
 
       {/* Hero Section */}
-      <main className="flex-1 pt-32 pb-16 px-6 md:px-12 lg:px-24">
+      <main className="flex-1 pt-32 pb-16 px-6 md:px-12 lg:px-24 bg-gradient-to-b from-blue-50 to-white">
         <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-12">
           <div className="max-w-2xl space-y-6">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-800 leading-tight">
+            <motion.h2 className="text-4xl md:text-5xl font-bold text-gray-800 leading-tight" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
               Layanan Pengaduan Digital <span className="text-blue-600">Masyarakat</span>
-            </h2>
-            <p className="text-lg text-gray-600">Sampaikan keluhan, aspirasi, atau pengaduan Anda langsung ke instansi pemerintah dengan cepat, mudah, dan transparan.</p>
-            <div className="flex flex-col sm:flex-row gap-4 pt-4">
-              <Link to="/lapor" className="flex-1">
+            </motion.h2>
+            <motion.p className="text-lg text-gray-600" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2, duration: 0.5 }}>
+              Sampaikan keluhan, aspirasi, atau pengaduan Anda langsung ke instansi pemerintah dengan cepat, mudah, dan transparan.
+            </motion.p>
+
+            <motion.div className="flex flex-col sm:flex-row gap-4 pt-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}>
+              <Link to="/pengaduan/form" className="flex-1">
                 <Button className="w-full py-3 text-lg">Lapor Sekarang</Button>
               </Link>
-              <Link to="/tentang" className="flex-1">
+              <Link to="/pengaduan/daftar" className="flex-1">
                 <Button variant="outline" className="w-full py-3 text-lg">
-                  Tentang Aplikasi
+                  Lihat Laporan
                 </Button>
               </Link>
-            </div>
-
-            {/* Stats */}
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-8">
-              <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-                <p className="text-2xl font-bold text-blue-600">10.000+</p>
-                <p className="text-gray-600 text-sm">Laporan Terproses</p>
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
-                <p className="text-2xl font-bold text-blue-600">95%</p>
-                <p className="text-gray-600 text-sm">Tingkat Respon</p>
-              </div>
-              <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 md:block hidden">
-                <p className="text-2xl font-bold text-blue-600">24</p>
-                <p className="text-gray-600 text-sm">Instansi Terhubung</p>
-              </div>
-            </div>
+            </motion.div>
+            {/* Animated Stats */}
+            <motion.div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.5 }}>
+              {[
+                { value: '10.000+', label: 'Laporan Terproses' },
+                { value: '95%', label: 'Tingkat Respon' },
+                { value: '24', label: 'Instansi Terhubung' },
+              ].map((stat, index) => (
+                <motion.div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100" whileHover={{ y: -5, boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }} transition={{ type: 'spring', stiffness: 300 }}>
+                  <p className="text-2xl font-bold text-blue-600">{stat.value}</p>
+                  <p className="text-gray-600 text-sm">{stat.label}</p>
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
 
+          {/* Animated SVG Illustration */}
           <div className="relative lg:w-1/2">
-            <img src={HeroIllustration} alt="Ilustrasi layanan pengaduan digital" className="w-full max-w-md lg:max-w-none animate-float" />
+            <motion.svg width="100%" viewBox="0 0 600 500" className="max-w-lg mx-auto" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }}>
+              {/* Dark Theme Background */}
+              <rect width="600" height="500" fill="#1a1b1e" rx="20" />
+
+              {/* Decorative Elements */}
+              <circle cx="50" cy="50" r="8" fill="#3b82f6" opacity="0.3" />
+              <circle cx="550" cy="450" r="12" fill="#10b981" opacity="0.3" />
+              <rect x="500" y="80" width="30" height="30" rx="15" fill="#818cf8" opacity="0.3" />
+
+              {/* Grid Dots */}
+              {Array.from({ length: 12 }).map((_, i) => (
+                <circle key={i} cx={100 + i * 40} cy="400" r="1.5" fill="#374151" />
+              ))}
+
+              {/* Main Illustration Container */}
+              <g transform="translate(50, 50)">
+                {/* People - More Detailed */}
+                <motion.g animate={{ y: [0, -8, 0] }} transition={{ repeat: Infinity, duration: 2.5 }}>
+                  {/* Head */}
+                  <circle cx="100" cy="100" r="25" fill="#FFD5C2" stroke="#374151" strokeWidth="2" />
+
+                  {/* Body */}
+                  <path d="M100 125 L100 200" stroke="#374151" strokeWidth="3" fill="none" />
+
+                  {/* Arms */}
+                  <path d="M100 140 L70 160 M100 140 L130 160" stroke="#374151" strokeWidth="3" fill="none" />
+
+                  {/* Legs */}
+                  <path d="M100 200 L80 240 M100 200 L120 240" stroke="#374151" strokeWidth="3" fill="none" />
+
+                  {/* Face */}
+                  <circle cx="90" cy="95" r="3" fill="#374151" />
+                  <circle cx="110" cy="95" r="3" fill="#374151" />
+                  <path d="M90 115 Q100 120 110 115" stroke="#374151" strokeWidth="2" fill="none" />
+
+                  {/* Document in Hand */}
+                  <motion.g initial={{ rotate: -5 }} animate={{ rotate: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 3 }}>
+                    <rect x="125" y="140" width="50" height="70" rx="5" fill="#ffffff" stroke="#3b82f6" strokeWidth="2" />
+                    <path d="M135 155 L165 155 M135 170 L160 170 M135 185 L150 185" stroke="#3b82f6" strokeWidth="1.5" />
+                    <circle cx="140" cy="200" r="3" fill="#3b82f6" />
+                  </motion.g>
+                </motion.g>
+
+                {/* Document Flow - Enhanced */}
+                <motion.g
+                  initial={{ x: 180, y: 100 }}
+                  animate={{ x: [180, 400], y: [100, 80] }}
+                  transition={{
+                    repeat: Infinity,
+                    repeatType: 'reverse',
+                    duration: 5,
+                    ease: 'easeInOut',
+                  }}
+                >
+                  <rect x="0" y="0" width="100" height="120" rx="8" fill="#ffffff" stroke="#3b82f6" strokeWidth="2" />
+                  <path d="M20 25 L80 25 M20 50 L70 50 M20 75 L60 75" stroke="#3b82f6" strokeWidth="2" />
+                  <circle cx="30" cy="100" r="5" fill="#10b981" />
+                </motion.g>
+
+                {/* Government Building - More Detailed */}
+                <g transform="translate(380, 60)">
+                  <motion.g whileHover={{ y: -5 }}>
+                    {/* Building Base */}
+                    <rect x="0" y="50" width="150" height="200" fill="#1e293b" stroke="#3b82f6" strokeWidth="2" rx="5" />
+
+                    {/* Roof */}
+                    <path d="M-10 50 L160 50 L140 20 L10 20 Z" fill="#0f172a" stroke="#3b82f6" strokeWidth="2" />
+
+                    {/* Windows */}
+                    {Array.from({ length: 4 }).map((_, i) => (
+                      <rect key={i} x="30" y={80 + i * 40} width="30" height="25" rx="3" fill="#3b82f6" opacity="0.7" />
+                    ))}
+
+                    {/* Door */}
+                    <rect x="90" y="180" width="40" height="70" rx="3" fill="#3b82f6" />
+                    <circle cx="115" cy="215" r="3" fill="#ffffff" />
+
+                    {/* Flag */}
+                    <path d="M150 20 L150 0" stroke="#374151" strokeWidth="2" />
+                    <rect x="150" y="0" width="40" height="25" fill="#ef4444" rx="2" />
+                  </motion.g>
+                </g>
+              </g>
+
+              {/* Decorative Connection Line */}
+              <motion.path d="M100 300 Q300 250 500 280" stroke="#3b82f6" strokeWidth="2" strokeDasharray="8 4" fill="none" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2, delay: 0.5 }} />
+            </motion.svg>
           </div>
         </div>
       </main>
