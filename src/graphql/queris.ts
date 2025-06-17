@@ -2,16 +2,14 @@
 import { gql } from '@apollo/client';
 
 export const GET_PENGADUAN_LIST = gql`
-  query GetPengaduanList($page: Int!, $perPage: Int!, $search: String, $filter: String) {
-    pengaduanList(page: $page, perPage: $perPage, search: $search, filter: $filter) {
-      items {
-        id
-        judul
-        kategori
-        status
-        createdAt
-      }
-      total
+  query GetPengaduanList {
+    daftarPengaduan {
+      id
+      judul
+      deskripsi
+      tanggal
+      status
+      userId
     }
   }
 `;

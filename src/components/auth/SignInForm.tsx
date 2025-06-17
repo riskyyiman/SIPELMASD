@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase';
+import { auth, signInWithEmail } from '../../firebase';
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from '../../icons';
 import Label from '../form/Label';
 import Input from '../form/input/InputField';
@@ -13,7 +12,6 @@ export default function SignInForm() {
   const [isChecked, setIsChecked] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [] = useState('staff');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -28,41 +26,55 @@ export default function SignInForm() {
       setLoading(false);
       return;
     }
+    console.log('Attempting login with:', { email, password }); // Tambahkan ini
 
     try {
-      // 1) Login ke backend
-      const backendResponse = await fetch('http://localhost:5000/api/auth/login', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
+      // 1. Coba login sebagai user Firebase (masyarakat)
+      await signInWithEmail(email, password); // <- gunakan helper dari firebase.ts
+      await auth.currentUser?.reload();
 
-      if (backendResponse.ok) {
+      console.log('Firebase user:', auth.currentUser);
+
+      const user = auth.currentUser;
+      localStorage.setItem('name', user?.displayName || user?.email || 'User');
+      localStorage.setItem('email', user?.email || '');
+      localStorage.setItem('provider', 'firebase');
+      localStorage.setItem('role', 'masyarakat');
+
+      navigate('/');
+    } catch (firebaseError) {
+      // 2. Kalau gagal login Firebase, coba ke backend (admin/petugas)
+      try {
+        const backendResponse = await fetch('http://localhost:5000/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+
+        if (!backendResponse.ok) {
+          const errText = await backendResponse.text();
+          console.error('Backend Error:', errText);
+          throw new Error('Login backend gagal');
+        }
+
         const data = await backendResponse.json();
 
         localStorage.setItem('token', data.token);
         localStorage.setItem('name', data.user.name);
         localStorage.setItem('email', data.user.email);
         localStorage.setItem('role', data.user.role);
+        localStorage.setItem('provider', 'backend');
 
-        const dest = data.user.role === 'admin' ? '/home' : data.user.role === 'petugas' ? '/' : '/';
-
-        navigate(dest);
-        return;
+        // Navigasi
+        if (data.user.role === 'admin' || data.user.role === 'petugas') {
+          navigate('/home');
+        } else {
+          navigate('/');
+        }
+      } catch (backendError) {
+        console.error('Login backend gagal:', backendError);
+        setError('Login gagal. Email atau password salah.');
       }
-      // Reload user untuk memastikan displayName sudah ter-update
-      await auth.currentUser?.reload();
-      const user = auth.currentUser;
-
-      localStorage.setItem('name', user?.displayName || user?.email || 'User');
-      localStorage.setItem('email', user?.email || '');
-      localStorage.setItem('provider', 'firebase');
-
-      // Default fallback role (jika tidak diketahui): arahkan ke dashboard umum
-      navigate('/dashboard');
-    } catch (err: any) {
-      console.error(err);
-      setError('Login gagal. Email atau password salah.');
     } finally {
       setLoading(false);
     }

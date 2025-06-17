@@ -1,9 +1,8 @@
-// src/pages/Pengaduan/index.tsx
 import { Routes, Route } from 'react-router-dom';
+import PengaduanLayout from './PengaduanLayout';
 import FormPengaduan from './FormPengaduan';
 import DaftarPengaduan from './DaftarPengaduan';
 import DetailPengaduan from './DetailPengaduan';
-import PengaduanLayout from './PengaduanLayout';
 
 export default function PengaduanRoutes() {
   return (
@@ -11,7 +10,8 @@ export default function PengaduanRoutes() {
       <Route element={<PengaduanLayout />}>
         <Route path="form" element={<FormPengaduan />} />
         <Route path="daftar" element={<DaftarPengaduan />} />
-        <Route path=":id" element={<DetailPengaduan />} />
+        <Route path="detail/:id" element={<DetailPengaduan />} />
+        <Route index element={<FormPengaduan />} /> {/* Default ke form */}
       </Route>
     </Routes>
   );
