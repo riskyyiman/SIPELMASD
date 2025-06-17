@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Button from '../components/ui/button/Button';
-import HeroIllustration from '../../public/images/hero/HeroSections.svg';
 import { motion } from 'framer-motion';
 
 export default function LandingPage() {
@@ -15,24 +14,45 @@ export default function LandingPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const userName = localStorage.getItem('name');
+  const isLoggedIn = !!userName;
+  const handleLogout = () => {
+    localStorage.clear();
+    window.location.href = '/';
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       {/* Header with scroll effect */}
       <header className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-white shadow-md py-4' : 'bg-blue-700 py-6'} text-white p-6 flex justify-between items-center`}>
         <h1 className={`text-2xl font-bold ${scrolled ? 'text-blue-700' : 'text-white'}`}>SiPelMasD</h1>
-        <nav className="space-x-6">
-          <Link
-            to="/signin" // Diubah dari "/login" ke "/signin" sesuai route yang ada
-            className={`hover:underline font-medium ${scrolled ? 'text-blue-700 hover:text-blue-800' : 'text-white'}`}
-          >
-            Masuk
-          </Link>
-          <Link
-            to="/signup" // Diubah dari "/register" ke "/signup" sesuai route yang ada
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-white text-blue-700 hover:bg-gray-100'}`}
-          >
-            Daftar
-          </Link>
+        <nav className="space-x-6 flex items-center">
+          {isLoggedIn ? (
+            <>
+              <span className={`font-medium ${scrolled ? 'text-blue-700' : 'text-white'}`}>Welcome, {userName}</span>
+              <button onClick={handleLogout} className={`p-1.5 rounded-full transition-all ${scrolled ? 'bg-gray-800 hover:bg-gray-900' : 'bg-gray-100 hover:bg-gray-200'} group`} aria-label="Logout">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className={`h-4 w-4 transition-all duration-200 ${scrolled ? 'text-gray-300 group-hover:text-white' : 'text-gray-600 group-hover:text-gray-900'}`}
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={1.5}
+                >
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15m3 0l3-3m0 0l-3-3m3 3H9" />
+                </svg>
+              </button>
+            </>
+          ) : (
+            <>
+              <Link to="/signin" className={`hover:underline font-medium ${scrolled ? 'text-blue-700 hover:text-blue-800' : 'text-white'}`}>
+                Masuk
+              </Link>
+              <Link to="/signup" className={`px-4 py-2 rounded-lg font-medium transition-colors ${scrolled ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-white text-blue-700 hover:bg-gray-100'}`}>
+                Daftar
+              </Link>
+            </>
+          )}
         </nav>
       </header>
 
