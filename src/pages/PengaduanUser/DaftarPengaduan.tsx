@@ -8,7 +8,7 @@ type Pengaduan = {
   judul: string;
   kategori: string;
   status: 'diterima' | 'diproses' | 'selesai';
-  tanggal: string; // penting: sesuaikan field
+  tanggal: string;
 };
 
 export default function DaftarPengaduan() {

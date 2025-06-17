@@ -1,15 +1,18 @@
-// src/lib/apollo-client.ts
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
+import { getAuth } from 'firebase/auth';
 
-// Buat link ke endpoint GraphQL kamu
 const httpLink = createHttpLink({
-  uri: 'http://localhost:5000/graphql', // Ganti sesuai URL backend
+  uri: 'http://localhost:5000/graphql',
 });
 
-// Tambahkan auth token ke setiap permintaan
-const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('token');
+const authLink = setContext(async (_, { headers }) => {
+  const auth = getAuth();
+  const user = auth.currentUser;
+
+  // Ambil token Firebase dari user yang login
+  const token = user ? await user.getIdToken() : null;
+
   return {
     headers: {
       ...headers,
@@ -18,12 +21,9 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
-// Buat Apollo Client
 const client = new ApolloClient({
   link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
-
-  // Optional: untuk debug di DevTools
   connectToDevTools: true,
 });
 

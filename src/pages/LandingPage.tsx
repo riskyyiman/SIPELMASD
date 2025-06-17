@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/ui/button/Button';
 import { motion } from 'framer-motion';
 
 export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
+  const [showLoginModal, setShowLoginModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -16,9 +18,17 @@ export default function LandingPage() {
 
   const userName = localStorage.getItem('name');
   const isLoggedIn = !!userName;
+
   const handleLogout = () => {
     localStorage.clear();
     window.location.href = '/';
+  };
+
+  const handleReportClick = (e: { preventDefault: () => void }) => {
+    if (!isLoggedIn) {
+      e.preventDefault();
+      setShowLoginModal(true);
+    }
   };
 
   return (
@@ -68,7 +78,7 @@ export default function LandingPage() {
             </motion.p>
 
             <motion.div className="flex flex-col sm:flex-row gap-4 pt-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.4, duration: 0.5 }}>
-              <Link to="/pengaduan/form" className="flex-1">
+              <Link to="/pengaduan/form" className="flex-1" onClick={handleReportClick}>
                 <Button className="w-full py-3 text-lg">Lapor Sekarang</Button>
               </Link>
               <Link to="/pengaduan/daftar" className="flex-1">
@@ -241,10 +251,6 @@ export default function LandingPage() {
           <p className="text-center text-gray-600 max-w-3xl mx-auto mb-12">Hanya perlu 3 langkah mudah untuk menyampaikan pengaduan Anda</p>
 
           <div className="grid md:grid-cols-3 gap-8 relative">
-            {/* Timeline connector */}
-            {/* <div className="hidden md:block absolute top-12 left-1/3 right-1/3 h-1 bg-blue-200"></div>
-            <div className="hidden md:block absolute top-12 left-2/3 right-0 h-1 bg-blue-200"></div> */}
-
             <div className="bg-white p-6 rounded-xl shadow-sm text-center relative z-10">
               <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">1</div>
               <h4 className="text-xl font-semibold mb-2">Buat Akun</h4>
@@ -272,11 +278,11 @@ export default function LandingPage() {
           <h3 className="text-3xl font-bold mb-6">Siap Melayani Masyarakat dengan Lebih Baik</h3>
           <p className="text-lg mb-8 opacity-90">Bergabunglah dengan ribuan masyarakat lainnya yang telah menggunakan SiPelMasD untuk menyampaikan aspirasi mereka.</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link to="/lapor">
-              <Button className="px-8 py-3 text-lg bg-blue-950 text-blue-700 hover:bg-gray-100 hover:text-black font-bold">Mulai Laporkan</Button>
+            <Link to="/pengaduan/form" onClick={handleReportClick}>
+              <Button className="px-8 py-3 text-lg bg-white text-blue-700 hover:bg-gray-100 hover:text-blue-800 font-bold">Mulai Laporkan</Button>
             </Link>
             <Link to="/tentang">
-              <Button className="px-8 py-3 text-lg bg-blue-950 text-blue-700 hover:bg-gray-100 hover:text-black font-bold">Pelajari Lebih Lanjut</Button>
+              <Button className="px-8 py-3 text-lg bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-700 font-bold">Pelajari Lebih Lanjut</Button>
             </Link>
           </div>
         </div>
@@ -299,7 +305,7 @@ export default function LandingPage() {
                 </Link>
               </li>
               <li>
-                <Link to="/lapor" className="text-gray-400 hover:text-white">
+                <Link to="/pengaduan/form" className="text-gray-400 hover:text-white" onClick={handleReportClick}>
                   Buat Laporan
                 </Link>
               </li>
@@ -365,6 +371,42 @@ export default function LandingPage() {
           <p>&copy; {new Date().getFullYear()} SiPelMasD. Dibangun oleh Tim Pengembang Pemerintah Daerah.</p>
         </div>
       </footer>
+
+      {/* Login Modal */}
+      {showLoginModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg max-w-md w-full mx-4">
+            <h3 className="text-xl font-bold text-gray-800 mb-4">Login Diperlukan</h3>
+            <p className="text-gray-600 mb-6">Anda perlu login terlebih dahulu untuk dapat mengirimkan pengaduan. Silahkan login atau daftar jika belum memiliki akun.</p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <Button
+                className="flex-1"
+                onClick={() => {
+                  setShowLoginModal(false);
+                  navigate('/signin');
+                }}
+              >
+                Login Sekarang
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  setShowLoginModal(false);
+                  navigate('/signup');
+                }}
+              >
+                Daftar Akun
+              </Button>
+            </div>
+            <button onClick={() => setShowLoginModal(false)} className="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

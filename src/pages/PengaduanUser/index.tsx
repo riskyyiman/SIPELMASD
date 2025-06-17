@@ -10,7 +10,7 @@ export default function PengaduanRoutes() {
       <Route element={<PengaduanLayout />}>
         <Route path="form" element={<FormPengaduan />} />
         <Route path="daftar" element={<DaftarPengaduan />} />
-        <Route path="detail/:id" element={<DetailPengaduan />} />
+        <Route path=":id" element={<DetailPengaduan />} />
         <Route index element={<FormPengaduan />} /> {/* Default ke form */}
       </Route>
     </Routes>

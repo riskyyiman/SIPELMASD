@@ -1,10 +1,9 @@
-// src/pages/Pengaduan/FormPengaduan.tsx
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { sanitizeInput } from '../../utils/sanitize';
 import Button from '../../components/ui/button/Button';
 import { useMutation, gql } from '@apollo/client';
-import { GET_PENGADUAN_LIST } from '../../graphql/queris'; // pastikan query daftar ada
+import { GET_PENGADUAN_LIST } from '../../graphql/queris';
 
 type FormData = {
   judul: string;
@@ -36,12 +35,27 @@ export default function FormPengaduan() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
+    setError,
   } = useForm<FormData>();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitSuccess, setSubmitSuccess] = useState(false);
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
+
+    // Validasi file (maks 5MB)
+    if (data.lampiran && data.lampiran.length > 0) {
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      for (let i = 0; i < data.lampiran.length; i++) {
+        if (data.lampiran[i].size > maxSize) {
+          setError('lampiran', { message: 'Ukuran lampiran tidak boleh lebih dari 5MB' });
+          setIsSubmitting(false);
+          return;
+        }
+      }
+    }
 
     const sanitizedData = {
       judul: sanitizeInput(data.judul),
@@ -53,6 +67,7 @@ export default function FormPengaduan() {
     try {
       await tambahPengaduan({ variables: sanitizedData });
       setSubmitSuccess(true);
+      reset(); // reset form jika berhasil
     } catch (error) {
       console.error('Gagal mengirim pengaduan:', error);
     } finally {
@@ -90,7 +105,7 @@ export default function FormPengaduan() {
             id="judul"
             type="text"
             {...register('judul', { required: 'Judul pengaduan wajib diisi' })}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 ${errors.judul ? 'border-red-500' : 'border-gray-300'}`}
+            className={`w-full px-4 py-2 border rounded-lg ${errors.judul ? 'border-red-500' : 'border-gray-300'} focus:ring focus:ring-blue-300`}
           />
           {errors.judul && <p className="mt-1 text-sm text-red-600">{errors.judul.message}</p>}
         </div>
@@ -100,11 +115,7 @@ export default function FormPengaduan() {
           <label htmlFor="kategori" className="block text-sm font-medium text-gray-700 mb-1">
             Kategori <span className="text-red-500">*</span>
           </label>
-          <select
-            id="kategori"
-            {...register('kategori', { required: 'Kategori wajib dipilih' })}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 ${errors.kategori ? 'border-red-500' : 'border-gray-300'}`}
-          >
+          <select id="kategori" {...register('kategori', { required: 'Kategori wajib dipilih' })} className={`w-full px-4 py-2 border rounded-lg ${errors.kategori ? 'border-red-500' : 'border-gray-300'} focus:ring focus:ring-blue-300`}>
             <option value="">Pilih Kategori</option>
             <option value="infrastruktur">Infrastruktur</option>
             <option value="pelayanan">Pelayanan Publik</option>
@@ -123,7 +134,7 @@ export default function FormPengaduan() {
             id="lokasi"
             type="text"
             {...register('lokasi', { required: 'Lokasi kejadian wajib diisi' })}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 ${errors.lokasi ? 'border-red-500' : 'border-gray-300'}`}
+            className={`w-full px-4 py-2 border rounded-lg ${errors.lokasi ? 'border-red-500' : 'border-gray-300'} focus:ring focus:ring-blue-300`}
           />
           {errors.lokasi && <p className="mt-1 text-sm text-red-600">{errors.lokasi.message}</p>}
         </div>
@@ -140,7 +151,7 @@ export default function FormPengaduan() {
               required: 'Deskripsi wajib diisi',
               minLength: { value: 20, message: 'Deskripsi minimal 20 karakter' },
             })}
-            className={`w-full px-4 py-2 border rounded-lg focus:ring-blue-500 focus:border-blue-500 ${errors.deskripsi ? 'border-red-500' : 'border-gray-300'}`}
+            className={`w-full px-4 py-2 border rounded-lg ${errors.deskripsi ? 'border-red-500' : 'border-gray-300'} focus:ring focus:ring-blue-300`}
           />
           {errors.deskripsi && <p className="mt-1 text-sm text-red-600">{errors.deskripsi.message}</p>}
         </div>
@@ -150,8 +161,9 @@ export default function FormPengaduan() {
           <label htmlFor="lampiran" className="block text-sm font-medium text-gray-700 mb-1">
             Lampiran (Opsional)
           </label>
-          <input id="lampiran" type="file" {...register('lampiran')} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" multiple />
+          <input id="lampiran" type="file" {...register('lampiran')} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring focus:ring-blue-300" multiple />
           <p className="mt-1 text-sm text-gray-500">Unggah foto atau dokumen pendukung (maks. 5MB)</p>
+          {errors.lampiran && <p className="text-sm text-red-600">{errors.lampiran.message}</p>}
         </div>
 
         <div className="pt-4">

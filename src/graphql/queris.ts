@@ -16,30 +16,15 @@ export const GET_PENGADUAN_LIST = gql`
 
 export const GET_PENGADUAN_DETAIL = gql`
   query GetPengaduanDetail($id: ID!) {
-    pengaduan(id: $id) {
+    pengaduanById(id: $id) {
       id
       judul
       deskripsi
       kategori
       lokasi
       status
-      lampiran
-      createdAt
-      updatedAt
-      pelapor {
-        id
-        nama
-      }
-      komentar {
-        id
-        isi
-        createdAt
-        penulis {
-          id
-          nama
-          role
-        }
-      }
+      tanggal
+      userId
     }
   }
 `;
