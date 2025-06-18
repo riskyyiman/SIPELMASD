@@ -9,6 +9,7 @@ export const GET_PENGADUAN_LIST = gql`
       deskripsi
       tanggal
       status
+      kategori # ✅ Tambahkan ini
       userId
     }
   }
