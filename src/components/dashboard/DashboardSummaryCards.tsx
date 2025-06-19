@@ -1,9 +1,26 @@
 import { useQuery } from '@apollo/client';
+import { useEffect, useState } from 'react';
 import { GET_PENGADUAN_LIST } from '../../graphql/queris';
 import LoadingSpinner from '../ui/LoadingSpinner';
 
 const DashboardSummaryCards = () => {
   const { loading, error, data } = useQuery(GET_PENGADUAN_LIST);
+  const [totalPengguna, setTotalPengguna] = useState<number>(0); // State untuk total pengguna
+
+  // Ambil data total pengguna dari backend
+  useEffect(() => {
+    const fetchUserCount = async () => {
+      try {
+        const res = await fetch('http://localhost:5000/user-count'); // Ganti sesuai dengan alamat backend kamu
+        const json = await res.json();
+        setTotalPengguna(json.totalUsers);
+      } catch (err) {
+        console.error('Gagal mengambil total pengguna:', err);
+      }
+    };
+
+    fetchUserCount();
+  }, []);
 
   if (loading) return <LoadingSpinner />;
   if (error) return <div className="text-red-500 text-center py-4">Gagal memuat data: {error.message}</div>;
@@ -15,14 +32,11 @@ const DashboardSummaryCards = () => {
   const dalamProses = pengaduanList.filter((item: any) => item.status === 'diproses').length;
   const selesai = pengaduanList.filter((item: any) => item.status === 'selesai').length;
 
-  // Dummy untuk pengguna aktif (nanti bisa diganti dengan query user aktif)
-  const penggunaAktif = 12;
-
   const summaryData = [
     { label: 'Total Laporan', value: totalLaporan, color: 'bg-blue-500' },
     { label: 'Dalam Proses', value: dalamProses, color: 'bg-yellow-500' },
     { label: 'Selesai', value: selesai, color: 'bg-green-500' },
-    { label: 'Pengguna Aktif', value: penggunaAktif, color: 'bg-indigo-500' },
+    { label: 'Total Pengguna', value: totalPengguna, color: 'bg-indigo-500' },
   ];
 
   return (

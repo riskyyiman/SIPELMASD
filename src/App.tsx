@@ -20,6 +20,9 @@ import { ScrollToTop } from './components/common/ScrollToTop';
 import Home from './pages/Dashboard/Home';
 import PengaduanRoutes from './pages/PengaduanUser';
 import LandingPage from './pages/LandingPage';
+import SemuaLaporan from './pages/SemuaLaporan';
+import FormTambahLaporan from './pages/TambahLaporan';
+import FormEditLaporan from './pages/EditLaporan';
 
 export default function App() {
   return (
@@ -35,6 +38,10 @@ export default function App() {
 
           {/* Others Page */}
           <Route path="/profile" element={<UserProfiles />} />
+          <Route path="/laporan" element={<SemuaLaporan />} />
+          <Route path="/tambah-laporan" element={<FormTambahLaporan />} />
+          <Route path="/edit-laporan" element={<FormEditLaporan />} />
+          <Route path="/riwayat" element={<SemuaLaporan />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/blank" element={<Blank />} />
 
