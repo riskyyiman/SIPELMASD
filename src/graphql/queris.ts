@@ -21,13 +21,14 @@ export const DELETE_PENGADUAN = gql`
 `;
 
 export const UPDATE_PENGADUAN_STATUS = gql`
-  mutation UpdateStatus($id: ID!, $status: String!) {
-    ubahStatusPengaduan(id: $id, status: $status) {
+  mutation UpdateStatus($id: ID!, $judul: String!, $kategori: String!, $lokasi: String, $deskripsi: String!, $status: String!) {
+    updatePengaduan(id: $id, judul: $judul, kategori: $kategori, lokasi: $lokasi, deskripsi: $deskripsi, status: $status) {
       id
       status
     }
   }
 `;
+
 // graphql/queris.ts
 export const TAMBAH_PENGADUAN = gql`
   mutation TambahPengaduan($judul: String!, $kategori: String!, $status: String!, $tanggal: String!) {

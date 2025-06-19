@@ -30,9 +30,21 @@ const SemuaLaporan = () => {
   };
 
   const handleStatusChange = async (id: string, newStatus: string) => {
+    const pengaduan = data.daftarPengaduan.find((p: Pengaduan) => p.id === id);
+    if (!pengaduan) return;
+
     try {
-      await updateStatus({ variables: { id, status: newStatus } });
-      refetch();
+      await updateStatus({
+        variables: {
+          id: pengaduan.id,
+          judul: pengaduan.judul,
+          kategori: pengaduan.kategori,
+          lokasi: pengaduan.lokasi || '', // jika null
+          deskripsi: pengaduan.deskripsi,
+          status: newStatus,
+        },
+        refetchQueries: [{ query: GET_PENGADUAN_LIST }],
+      });
     } catch (err) {
       alert('Gagal mengubah status');
     }
@@ -75,9 +87,6 @@ const SemuaLaporan = () => {
                 <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                   <button onClick={() => navigate(`/pengaduan/${item.id}`)} className="text-blue-600 hover:text-blue-900">
                     Detail
-                  </button>
-                  <button onClick={() => navigate(`/pengaduan/edit/${item.id}`, { state: item })} className="text-yellow-600 hover:text-yellow-800">
-                    Edit
                   </button>
                   <button onClick={() => handleDelete(item.id)} className="text-red-600 hover:text-red-800">
                     Hapus

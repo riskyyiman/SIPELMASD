@@ -22,7 +22,8 @@ import PengaduanRoutes from './pages/PengaduanUser';
 import LandingPage from './pages/LandingPage';
 import SemuaLaporan from './pages/SemuaLaporan';
 import FormTambahLaporan from './pages/TambahLaporan';
-import FormEditLaporan from './pages/EditLaporan';
+import RiwayatLaporan from './pages/RiwayatLaporan';
+import Logout from './pages/Logout';
 
 export default function App() {
   return (
@@ -40,8 +41,7 @@ export default function App() {
           <Route path="/profile" element={<UserProfiles />} />
           <Route path="/laporan" element={<SemuaLaporan />} />
           <Route path="/tambah-laporan" element={<FormTambahLaporan />} />
-          <Route path="/edit-laporan" element={<FormEditLaporan />} />
-          <Route path="/riwayat" element={<SemuaLaporan />} />
+          <Route path="/riwayat" element={<RiwayatLaporan />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/blank" element={<Blank />} />
 
@@ -70,6 +70,9 @@ export default function App() {
         {/* Auth Pages */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
+
+        {/* Logout Page */}
+        <Route path="/logout" element={<Logout />} />
 
         {/* Fallback */}
         <Route path="*" element={<NotFound />} />

@@ -12,7 +12,9 @@ type Pengaduan = {
 };
 
 export default function DaftarPengaduan() {
-  const { loading, error, data } = useQuery(GET_PENGADUAN_LIST);
+  const { loading, error, data } = useQuery(GET_PENGADUAN_LIST, {
+    pollInterval: 5000, // fetch ulang setiap 5 detik
+  });
 
   if (loading) return <div className="text-center py-8">Memuat data...</div>;
   if (error) return <div className="text-center py-8 text-red-500">Error: {error.message}</div>;

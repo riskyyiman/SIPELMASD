@@ -30,7 +30,6 @@ const navItems: NavItem[] = [
     subItems: [
       { name: 'Semua Laporan', path: '/laporan' },
       { name: 'Tambah Laporan', path: '/tambah-laporan' },
-      { name: 'Edit Laporan', path: '/edit-laporan' },
       { name: 'Riwayat Laporan', path: '/riwayat' },
     ],
   },
