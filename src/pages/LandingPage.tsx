@@ -87,12 +87,13 @@ export default function LandingPage() {
                 </Button>
               </Link>
             </motion.div>
+
             {/* Animated Stats */}
             <motion.div className="grid grid-cols-2 md:grid-cols-3 gap-4 pt-8" initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.6, duration: 0.5 }}>
               {[
-                { value: '10.000+', label: 'Laporan Terproses' },
-                { value: '95%', label: 'Tingkat Respon' },
-                { value: '24', label: 'Instansi Terhubung' },
+                { value: '7.500+', label: 'Laporan Terproses' },
+                { value: '92%', label: 'Tingkat Respon' },
+                { value: '10', label: 'Instansi Terhubung' },
               ].map((stat, index) => (
                 <motion.div key={index} className="bg-white p-4 rounded-lg shadow-sm border border-gray-100" whileHover={{ y: -5, boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)' }} transition={{ type: 'spring', stiffness: 300 }}>
                   <p className="text-2xl font-bold text-blue-600">{stat.value}</p>
@@ -102,95 +103,90 @@ export default function LandingPage() {
             </motion.div>
           </div>
 
-          {/* Animated SVG Illustration */}
+          {/* Interactive Card Component with Revised Steps */}
           <div className="relative lg:w-1/2">
-            <motion.svg width="100%" viewBox="0 0 600 500" className="max-w-lg mx-auto" initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ duration: 0.8 }}>
-              {/* Dark Theme Background */}
-              <rect width="600" height="500" fill="#1a1b1e" rx="20" />
+            <motion.div
+              className="bg-white rounded-2xl shadow-xl overflow-hidden border border-gray-100 max-w-lg mx-auto"
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8 }}
+              whileHover={{ scale: 1.02 }}
+            >
+              {/* Card Header */}
+              <div className="bg-blue-600 p-4 flex items-center">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 rounded-full bg-white opacity-80"></div>
+                  <div className="w-3 h-3 rounded-full bg-white opacity-60"></div>
+                  <div className="w-3 h-3 rounded-full bg-white opacity-40"></div>
+                </div>
+                <p className="text-white font-medium ml-4">Cara Menggunakan SiPelMasD</p>
+              </div>
 
-              {/* Decorative Elements */}
-              <circle cx="50" cy="50" r="8" fill="#3b82f6" opacity="0.3" />
-              <circle cx="550" cy="450" r="12" fill="#10b981" opacity="0.3" />
-              <rect x="500" y="80" width="30" height="30" rx="15" fill="#818cf8" opacity="0.3" />
+              {/* Card Content with Revised Steps */}
+              <div className="p-6 space-y-6">
+                {/* Step 1 - Buat Akun */}
+                <motion.div className="flex items-start" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.2 }}>
+                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-4">1</div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800">Buat Akun</h3>
+                    <p className="text-gray-600 text-sm mt-1">Daftar dengan mudah menggunakan email atau nomor telepon Anda.</p>
+                  </div>
+                </motion.div>
 
-              {/* Grid Dots */}
-              {Array.from({ length: 12 }).map((_, i) => (
-                <circle key={i} cx={100 + i * 40} cy="400" r="1.5" fill="#374151" />
-              ))}
+                {/* Step 2 - Isi Formulir */}
+                <motion.div className="flex items-start" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.4 }}>
+                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-4">2</div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800">Isi Formulir</h3>
+                    <p className="text-gray-600 text-sm mt-1">Sampaikan laporan Anda dengan melengkapi formulir pengaduan.</p>
+                  </div>
+                </motion.div>
 
-              {/* Main Illustration Container */}
-              <g transform="translate(50, 50)">
-                {/* People - More Detailed */}
-                <motion.g animate={{ y: [0, -8, 0] }} transition={{ repeat: Infinity, duration: 2.5 }}>
-                  {/* Head */}
-                  <circle cx="100" cy="100" r="25" fill="#FFD5C2" stroke="#374151" strokeWidth="2" />
+                {/* Step 3 - Pantau Perkembangan */}
+                <motion.div className="flex items-start" initial={{ x: 20, opacity: 0 }} animate={{ x: 0, opacity: 1 }} transition={{ delay: 0.6 }}>
+                  <div className="bg-blue-100 text-blue-600 rounded-full w-8 h-8 flex items-center justify-center flex-shrink-0 mr-4">3</div>
+                  <div>
+                    <h3 className="font-semibold text-gray-800">Pantau Perkembangan</h3>
+                    <p className="text-gray-600 text-sm mt-1">Lacak status laporan Anda melalui website SiPelMasD.</p>
+                  </div>
+                </motion.div>
+              </div>
 
-                  {/* Body */}
-                  <path d="M100 125 L100 200" stroke="#374151" strokeWidth="3" fill="none" />
+              {/* Animated Progress Bar */}
+              <div className="px-6 pb-6">
+                <motion.div className="h-2 bg-gray-200 rounded-full overflow-hidden" initial={{ width: 0 }} animate={{ width: '100%' }} transition={{ duration: 2, delay: 0.5 }}>
+                  <div className="h-full bg-blue-600 rounded-full" style={{ width: '100%' }} />
+                </motion.div>
+                <p className="text-right text-sm text-gray-500 mt-2">Proses pengaduan yang sederhana dan transparan</p>
+              </div>
+            </motion.div>
 
-                  {/* Arms */}
-                  <path d="M100 140 L70 160 M100 140 L130 160" stroke="#374151" strokeWidth="3" fill="none" />
-
-                  {/* Legs */}
-                  <path d="M100 200 L80 240 M100 200 L120 240" stroke="#374151" strokeWidth="3" fill="none" />
-
-                  {/* Face */}
-                  <circle cx="90" cy="95" r="3" fill="#374151" />
-                  <circle cx="110" cy="95" r="3" fill="#374151" />
-                  <path d="M90 115 Q100 120 110 115" stroke="#374151" strokeWidth="2" fill="none" />
-
-                  {/* Document in Hand */}
-                  <motion.g initial={{ rotate: -5 }} animate={{ rotate: [0, 5, 0] }} transition={{ repeat: Infinity, duration: 3 }}>
-                    <rect x="125" y="140" width="50" height="70" rx="5" fill="#ffffff" stroke="#3b82f6" strokeWidth="2" />
-                    <path d="M135 155 L165 155 M135 170 L160 170 M135 185 L150 185" stroke="#3b82f6" strokeWidth="1.5" />
-                    <circle cx="140" cy="200" r="3" fill="#3b82f6" />
-                  </motion.g>
-                </motion.g>
-
-                {/* Document Flow - Enhanced */}
-                <motion.g
-                  initial={{ x: 180, y: 100 }}
-                  animate={{ x: [180, 400], y: [100, 80] }}
-                  transition={{
-                    repeat: Infinity,
-                    repeatType: 'reverse',
-                    duration: 5,
-                    ease: 'easeInOut',
-                  }}
-                >
-                  <rect x="0" y="0" width="100" height="120" rx="8" fill="#ffffff" stroke="#3b82f6" strokeWidth="2" />
-                  <path d="M20 25 L80 25 M20 50 L70 50 M20 75 L60 75" stroke="#3b82f6" strokeWidth="2" />
-                  <circle cx="30" cy="100" r="5" fill="#10b981" />
-                </motion.g>
-
-                {/* Government Building - More Detailed */}
-                <g transform="translate(380, 60)">
-                  <motion.g whileHover={{ y: -5 }}>
-                    {/* Building Base */}
-                    <rect x="0" y="50" width="150" height="200" fill="#1e293b" stroke="#3b82f6" strokeWidth="2" rx="5" />
-
-                    {/* Roof */}
-                    <path d="M-10 50 L160 50 L140 20 L10 20 Z" fill="#0f172a" stroke="#3b82f6" strokeWidth="2" />
-
-                    {/* Windows */}
-                    {Array.from({ length: 4 }).map((_, i) => (
-                      <rect key={i} x="30" y={80 + i * 40} width="30" height="25" rx="3" fill="#3b82f6" opacity="0.7" />
-                    ))}
-
-                    {/* Door */}
-                    <rect x="90" y="180" width="40" height="70" rx="3" fill="#3b82f6" />
-                    <circle cx="115" cy="215" r="3" fill="#ffffff" />
-
-                    {/* Flag */}
-                    <path d="M150 20 L150 0" stroke="#374151" strokeWidth="2" />
-                    <rect x="150" y="0" width="40" height="25" fill="#ef4444" rx="2" />
-                  </motion.g>
-                </g>
-              </g>
-
-              {/* Decorative Connection Line */}
-              <motion.path d="M100 300 Q300 250 500 280" stroke="#3b82f6" strokeWidth="2" strokeDasharray="8 4" fill="none" initial={{ pathLength: 0 }} animate={{ pathLength: 1 }} transition={{ duration: 2, delay: 0.5 }} />
-            </motion.svg>
+            {/* Floating Elements for Visual Interest */}
+            <motion.div
+              className="absolute -top-6 -left-6 w-16 h-16 bg-blue-100 rounded-full opacity-30"
+              animate={{
+                scale: [1, 1.2, 1],
+                opacity: [0.3, 0.5, 0.3],
+              }}
+              transition={{
+                duration: 4,
+                repeat: Infinity,
+                repeatType: 'reverse',
+              }}
+            />
+            <motion.div
+              className="absolute -bottom-4 -right-4 w-20 h-20 bg-green-100 rounded-full opacity-30"
+              animate={{
+                scale: [1, 1.3, 1],
+                opacity: [0.3, 0.6, 0.3],
+              }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                repeatType: 'reverse',
+                delay: 1,
+              }}
+            />
           </div>
         </div>
       </main>
@@ -266,25 +262,61 @@ export default function LandingPage() {
             <div className="bg-white p-6 rounded-xl shadow-sm text-center relative z-10">
               <div className="w-16 h-16 bg-blue-600 rounded-full flex items-center justify-center text-white font-bold text-xl mx-auto mb-4">3</div>
               <h4 className="text-xl font-semibold mb-2">Pantau Perkembangan</h4>
-              <p className="text-gray-600">Lacak status laporan Anda melalui dashboard pribadi.</p>
+              <p className="text-gray-600">Lacak status laporan Anda melalui website SiPelMasD.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-32 bg-blue-700 text-white px-6 md:px-12 lg:px-24">
-        <div className="max-w-4xl mx-auto text-center">
-          <h3 className="text-3xl font-bold mb-6">Siap Melayani Masyarakat dengan Lebih Baik</h3>
-          <p className="text-lg mb-8 opacity-90">Bergabunglah dengan ribuan masyarakat lainnya yang telah menggunakan SiPelMasD untuk menyampaikan aspirasi mereka.</p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      <section className="py-20 md:py-32 bg-gradient-to-r from-blue-600 to-blue-800 text-white px-6 md:px-12 lg:px-24 relative overflow-hidden">
+        {/* Animated background elements */}
+        <motion.div
+          className="absolute top-0 left-0 w-full h-full opacity-10"
+          initial={{ scale: 1 }}
+          animate={{ scale: 1.1 }}
+          transition={{
+            duration: 15,
+            repeat: Infinity,
+            repeatType: 'reverse',
+          }}
+        >
+          <div className="absolute top-20 left-10 w-40 h-40 rounded-full bg-blue-400"></div>
+          <div className="absolute bottom-10 right-20 w-60 h-60 rounded-full bg-blue-500"></div>
+          <div className="absolute top-1/3 right-1/4 w-32 h-32 rounded-full bg-blue-300"></div>
+        </motion.div>
+
+        <div className="max-w-4xl mx-auto text-center relative z-10">
+          <motion.h3 className="text-3xl md:text-4xl font-bold mb-6" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }} viewport={{ once: true }}>
+            Siap Melayani Masyarakat dengan Lebih Baik
+          </motion.h3>
+
+          <motion.p className="text-lg md:text-xl mb-8 opacity-90 max-w-3xl mx-auto" initial={{ opacity: 0 }} whileInView={{ opacity: 0.9 }} transition={{ duration: 0.6, delay: 0.2 }} viewport={{ once: true }}>
+            Bergabunglah dengan ribuan masyarakat lainnya yang telah menggunakan SiPelMasD untuk menyampaikan aspirasi mereka.
+          </motion.p>
+
+          <motion.div className="flex flex-col sm:flex-row gap-4 justify-center" initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} transition={{ duration: 0.6, delay: 0.4 }} viewport={{ once: true }}>
             <Link to="/pengaduan/form" onClick={handleReportClick}>
-              <Button className="px-8 py-3 text-lg bg-white text-blue-700 hover:bg-gray-100 hover:text-blue-800 font-bold">Mulai Laporkan</Button>
+              <Button className="px-8 py-3 text-lg font-bold text-white bg-blue-500 hover:bg-blue-400 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">Mulai Laporkan</Button>
             </Link>
             <Link to="/tentang">
-              <Button className="px-8 py-3 text-lg bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-700 font-bold">Pelajari Lebih Lanjut</Button>
+              <Button className="px-8 py-3 text-lg font-bold text-white bg-blue-500 hover:bg-blue-400 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 hover:scale-105">
+                Pelajari Lebih Lanjut
+              </Button>
             </Link>
-          </div>
+          </motion.div>
+
+          {/* Floating community avatars */}
+          <motion.div className="flex justify-center mt-12 -mb-16 md:-mb-24" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, delay: 0.6 }} viewport={{ once: true }}>
+            <div className="flex -space-x-3">
+              {[1, 2, 3, 4, 5].map((item) => (
+                <motion.div key={item} className="w-12 h-12 rounded-full bg-white border-2 border-blue-500 overflow-hidden shadow-md" whileHover={{ y: -5 }} transition={{ type: 'spring', stiffness: 300 }}>
+                  <div className={`w-full h-full bg-blue-${100 + item * 100} flex items-center justify-center text-blue-600 font-bold`}>{item}</div>
+                </motion.div>
+              ))}
+              <div className="w-12 h-12 rounded-full bg-blue-100 border-2 border-blue-500 flex items-center justify-center text-blue-600 font-bold shadow-md">5K+</div>
+            </div>
+          </motion.div>
         </div>
       </section>
 
@@ -334,7 +366,7 @@ export default function LandingPage() {
                     d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                   />
                 </svg>
-                (021) 1234-5678
+                08888888888888888
               </li>
               <li className="flex items-center gap-2">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -354,10 +386,11 @@ export default function LandingPage() {
                 </svg>
               </a>
               <a href="#" className="text-gray-400 hover:text-white">
-                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12.315 2c2.43 0 2.784.013 3.808.06 1.064.049 1.791.218 2.427.465a4.902 4.902 0 011.772 1.153 4.902 4.902 0 011.153 1.772c.247.636.416 1.363.465 2.427.048 1.067.06 1.407.06 4.123v.08c0 2.643-.012 2.987-.06 4.043-.049 1.064-.218 1.791-.465 2.427a4.902 4.902 0 01-1.153 1.772 4.902 4.902 0 01-1.772 1.153c-.636.247-1.363.416-2.427.465-1.067.048-1.407.06-4.123.06h-.08c-2.643 0-2.987-.012-4.043-.06-1.064-.049-1.791-.218-2.427-.465a4.902 4.902 0 01-1.772-1.153 4.902 4.902 0 01-1.153-1.772c-.247-.636-.416-1.363-.465-2.427-.047-1.024-.06-1.379-.06-3.808v-.63c0-2.43.013-2.784.06-3.808.049-1.064.218-1.791.465-2.427a4.902 4.902 0 011.153-1.772A4.902 4.902 0 015.45 2.525c.636-.247 1.363-.416 2.427-.465C8.901 2.013 9.256 2 11.685 2h.63zm-.081 1.802h-.468c-2.456 0-2.784.011-3.807.058-.975.045-1.504.207-1.857.344-.467.182-.8.398-1.15.748-.35.35-.566.683-.748 1.15-.137.353-.3.882-.344 1.857-.047 1.023-.058 1.351-.058 3.807v.468c0 2.456.011 2.784.058 3.807.045.975.207 1.504.344 1.857.182.466.399.8.748 1.15.35.35.683.566 1.15.748 1.857.344.353.3.882.344 1.857.048 1.067.058 1.407.058 4.123v.08c0 2.643-.01 2.987-.058 4.043-.045.975-.207 1.504-.344 1.857-.182.466-.399.8-.748 1.15-.35.35-.683.566-1.15.748-.353.137-.882.3-1.857.344-1.054.048-1.37.058-3.808.058h-.08c-2.597 0-2.917-.01-3.96-.058-.976-.045-1.505-.207-1.858-.344-.467-.182-.8-.398-1.15-.748-.35-.35-.566-.683-.748-1.15-.137-.353-.3-.882-.344-1.857-.048-1.055-.058-1.37-.058-3.808 0-2.597.01-2.917.058-3.96.045-.976.207-1.505.344-1.858.182-.467.399-.8.748-1.15.35-.35.683-.566 1.15-.748.353-.137.882-.3 1.857-.344 1.023-.047 1.351-.058 3.807-.058h.468c2.456 0 2.784-.011 3.807-.058.975-.045 1.504-.207 1.857-.344.466-.182.8-.398 1.15-.748.35-.35.566-.683.748-1.15.137-.353.3-.882.344-1.857.048-1.055.058-1.37.058-3.808 0-2.597-.01-2.917-.058-3.96-.045-.976-.207-1.505-.344-1.858a3.097 3.097 0 00-.748-1.15 3.098 3.098 0 00-1.15-.748c-.353-.137-.882-.3-1.857-.344-1.023-.047-1.351-.058-3.807-.058zM12 6.865a5.135 5.135 0 110 10.27 5.135 5.135 0 010-10.27zm0 1.802a3.333 3.333 0 100 6.666 3.333 3.333 0 000-6.666zm5.338-3.205a1.2 1.2 0 110 2.4 1.2 1.2 0 010-2.4z" />
+                <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 1.366.062 2.633.332 3.608 1.308.975.975 1.245 2.242 1.308 3.608.058 1.266.07 1.646.07 4.85s-.012 3.584-.07 4.85c-.062 1.366-.332 2.633-1.308 3.608-.975.975-2.242 1.245-3.608 1.308-1.266.058-1.646.07-4.85.07s-3.584-.012-4.85-.07c-1.366-.062-2.633-.332-3.608-1.308-.975-.975-1.245-2.242-1.308-3.608C2.175 15.647 2.163 15.267 2.163 12s.012-3.584.07-4.85c.062-1.366.332-2.633 1.308-3.608.975-.975 2.242-1.245 3.608-1.308C8.416 2.175 8.796 2.163 12 2.163zm0-2.163C8.736 0 8.332.014 7.052.072 5.773.13 4.602.385 3.635 1.352 2.668 2.319 2.413 3.49 2.355 4.768.297 6.048.284 6.452.284 12s.014 5.952.072 7.232c.058 1.278.313 2.449 1.28 3.416.967.967 2.138 1.222 3.416 1.28 1.28.058 1.684.072 7.232.072s5.952-.014 7.232-.072c1.278-.058 2.449-.313 3.416-1.28.967-.967 1.222-2.138 1.28-3.416.058-1.28.072-1.684.072-7.232s-.014-5.952-.072-7.232c-.058-1.278-.313-2.449-1.28-3.416C21.449.385 20.278.13 19 .072 17.72.014 17.316 0 14.052 0H12zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zm0 10.162a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 11-2.88 0 1.44 1.44 0 012.88 0z" />
                 </svg>
               </a>
+
               <a href="#" className="text-gray-400 hover:text-white">
                 <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />

@@ -2,7 +2,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import SignIn from './pages/AuthPages/SignIn';
 import SignUp from './pages/AuthPages/SignUp';
 import NotFound from './pages/OtherPage/NotFound';
-import UserProfiles from './pages/UserProfiles';
 import Videos from './pages/UiElements/Videos';
 import Images from './pages/UiElements/Images';
 import Alerts from './pages/UiElements/Alerts';
@@ -24,6 +23,9 @@ import SemuaLaporan from './pages/SemuaLaporan';
 import FormTambahLaporan from './pages/TambahLaporan';
 import RiwayatLaporan from './pages/RiwayatLaporan';
 import Logout from './pages/Logout';
+import Petugas from './pages/Petugas';
+import User from './pages/User';
+import AboutPage from './pages/AboutPage';
 
 export default function App() {
   return (
@@ -38,10 +40,14 @@ export default function App() {
           <Route path="/home" element={<Home />} />
 
           {/* Others Page */}
-          <Route path="/profile" element={<UserProfiles />} />
+          <Route path="/about" element={<AboutPage />} />
+
+          {/* Pengaduan Routes */}
           <Route path="/laporan" element={<SemuaLaporan />} />
           <Route path="/tambah-laporan" element={<FormTambahLaporan />} />
           <Route path="/riwayat" element={<RiwayatLaporan />} />
+          <Route path="/akun/petugas" element={<Petugas />} />
+          <Route path="/akun/pengguna" element={<User />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/blank" element={<Blank />} />
 

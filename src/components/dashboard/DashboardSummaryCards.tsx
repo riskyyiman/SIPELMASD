@@ -11,7 +11,7 @@ const DashboardSummaryCards = () => {
   useEffect(() => {
     const fetchUserCount = async () => {
       try {
-        const res = await fetch('http://localhost:5000/user-count'); // Ganti sesuai dengan alamat backend kamu
+        const res = await fetch('http://localhost:5000/api/auth/user-count');
         const json = await res.json();
         setTotalPengguna(json.totalUsers);
       } catch (err) {

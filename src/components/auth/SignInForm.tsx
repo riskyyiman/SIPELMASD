@@ -90,8 +90,6 @@ export default function SignInForm() {
 
       <div>
         <p>adminrisky@gmail.com</p>
-        <p>user1@gmail.com</p>
-        <p>user123</p>
       </div>
 
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
