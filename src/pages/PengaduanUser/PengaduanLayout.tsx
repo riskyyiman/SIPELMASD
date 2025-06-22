@@ -39,23 +39,23 @@ export default function PengaduanLayout() {
       <div className="fixed top-1/3 right-20 w-48 h-48 rounded-full bg-blue-200 opacity-5 animate-float animation-delay-2000"></div>
 
       {/* Add this to your global CSS or Tailwind config */}
-      <style jsx>{`
-        @keyframes float {
-          0%,
-          100% {
-            transform: translateY(0) rotate(0deg);
-          }
-          50% {
-            transform: translateY(-20px) rotate(5deg);
-          }
-        }
-        .animate-float {
-          animation: float 8s ease-in-out infinite;
-        }
-        .animation-delay-2000 {
-          animation-delay: 2s;
-        }
-      `}</style>
+      <style>{`
+  @keyframes float {
+    0%,
+    100% {
+      transform: translateY(0) rotate(0deg);
+    }
+    50% {
+      transform: translateY(-20px) rotate(5deg);
+    }
+  }
+  .animate-float {
+    animation: float 8s ease-in-out infinite;
+  }
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+`}</style>
     </div>
   );
 }

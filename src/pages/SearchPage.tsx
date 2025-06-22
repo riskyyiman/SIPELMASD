@@ -10,7 +10,7 @@ function useQueryParam(param: string) {
 }
 
 const STATUS_OPTIONS = ['', 'diterima', 'diproses', 'selesai'];
-const KATEGORI_OPTIONS = ['', 'infrastruktur', 'pelayanan publik', 'lingkungan', 'lainnya'];
+const KATEGORI_OPTIONS = ['', 'infrastruktur', 'pelayanan', 'lingkungan', 'lainnya'];
 
 export default function SearchPage() {
   const keywordFromURL = useQueryParam('keyword') || '';

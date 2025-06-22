@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth, signInWithEmail } from '../../firebase';
-import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from '../../icons';
+import { ChevronLeft, Eye, EyeOff, Loader2 } from 'lucide-react';
 import Label from '../form/Label';
 import Input from '../form/input/InputField';
 import Checkbox from '../form/input/Checkbox';
@@ -86,64 +86,85 @@ export default function SignInForm() {
   };
 
   return (
-    <div className="flex flex-col flex-1">
-      <div className="w-full max-w-md pt-10 mx-auto">
-        <Link to="/" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
-          <ChevronLeftIcon className="size-5" /> Back to Home
+    <div className="flex flex-col min-h-screen p-4 sm:p-6  dark:bg-gray-900">
+      <div className="w-full max-w-md mx-auto mt-4">
+        <Link to="/" className="inline-flex items-center gap-1 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200">
+          <ChevronLeft className="w-5 h-5" />
+          Back to Home
         </Link>
       </div>
 
-      <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
-        <div className="mb-8">
-          <h1 className="mb-2 font-semibold text-gray-800 sm:text-title-md">Sign In</h1>
-          <p className="text-sm text-gray-500 dark:text-gray-400">Masukkan email dan password untuk masuk</p>
-        </div>
-
-        <form onSubmit={handleSignIn}>
-          <div className="space-y-6">
-            <div>
-              <Label>
-                Email <span className="text-error-500">*</span>
-              </Label>
-              <Input type="email" placeholder="example@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} />
-            </div>
-
-            <div>
-              <Label>
-                Password <span className="text-error-500">*</span>
-              </Label>
-              <div className="relative">
-                <Input type={showPassword ? 'text' : 'password'} placeholder="Masukkan password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <span onClick={() => setShowPassword(!showPassword)} className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer">
-                  {showPassword ? <EyeIcon className="size-5 fill-gray-500 dark:fill-gray-400" /> : <EyeCloseIcon className="size-5 fill-gray-500 dark:fill-gray-400" />}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <Checkbox checked={isChecked} onChange={setIsChecked} />
-                <span className="text-theme-sm text-gray-700 dark:text-gray-400">Keep me logged in</span>
-              </div>
-              <Link to="/reset-password" className="text-brand-500 hover:text-brand-600 dark:text-brand-400">
-                Forgot password?
-              </Link>
-            </div>
-
-            {error && <p className="text-sm text-red-500">{error}</p>}
-
-            <Button className="w-full" size="sm" disabled={loading}>
-              {loading ? 'Signing in...' : 'Sign in'}
-            </Button>
+      <div className="flex items-center justify-center flex-1">
+        <div className="w-full max-w-md p-8 mx-auto bg-white rounded-lg shadow-sm dark:bg-gray-800">
+          <div className="mb-8 text-center sm:text-left">
+            <h1 className="mb-2 text-2xl font-bold text-gray-800 dark:text-gray-100">Welcome Back</h1>
+            <p className="text-gray-600 dark:text-gray-400">Sign in to continue to your account</p>
           </div>
-        </form>
 
-        <p className="mt-5 text-center text-sm text-gray-700 dark:text-gray-400 sm:text-start">
-          Belum punya akun?{' '}
-          <Link to="/signup" className="text-brand-500 hover:text-brand-600 dark:text-brand-400">
-            Sign Up
-          </Link>
-        </p>
+          <form onSubmit={handleSignIn} className="space-y-6">
+            <div className="space-y-4">
+              <div>
+                <Label htmlFor="email">
+                  Email <span className="text-red-500">*</span>
+                </Label>
+                <Input id="email" type="email" placeholder="example@gmail.com" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+              </div>
+
+              <div>
+                <Label htmlFor="password">
+                  Password <span className="text-red-500">*</span>
+                </Label>
+                <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    placeholder="Masukkan password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="w-full px-4 py-2 pr-10 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  />
+                  <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
+                    {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Checkbox id="remember" checked={isChecked} onChange={setIsChecked} className="w-4 h-4 border-gray-300 rounded text-blue-600 focus:ring-blue-500" />
+                  <Label htmlFor="remember" className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                    Remember me
+                  </Label>
+                </div>
+                <Link to="/reset-password" className="text-sm font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
+                  Forgot password?
+                </Link>
+              </div>
+            </div>
+
+            {error && <div className="p-3 text-sm text-red-700 bg-red-100 rounded-lg dark:bg-red-900 dark:text-red-200">{error}</div>}
+
+            <Button type="submit" className="w-full py-2 font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50" disabled={loading}>
+              {loading ? (
+                <span className="flex items-center justify-center gap-2">
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  Signing in...
+                </span>
+              ) : (
+                'Sign in'
+              )}
+            </Button>
+          </form>
+
+          <div className="mt-6 text-center">
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              Don't have an account?{' '}
+              <Link to="/signup" className="font-medium text-blue-600 hover:text-blue-500 dark:text-blue-400 dark:hover:text-blue-300">
+                Sign up
+              </Link>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
