@@ -12,7 +12,7 @@ type Pengaduan = {
 };
 
 const RiwayatLaporan = () => {
-  const { loading, error, data, refetch } = useQuery(GET_PENGADUAN_LIST, {
+  const { loading, error, data } = useQuery(GET_PENGADUAN_LIST, {
     fetchPolicy: 'network-only', // ⬅️ memastikan selalu ambil data terbaru
   });
 
