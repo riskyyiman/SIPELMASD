@@ -26,6 +26,7 @@ import Logout from './pages/Logout';
 import Petugas from './pages/Petugas';
 import User from './pages/User';
 import AboutPage from './pages/AboutPage';
+import SearchPage from './pages/SearchPage';
 
 export default function App() {
   return (
@@ -53,6 +54,9 @@ export default function App() {
 
           {/* Forms */}
           <Route path="/form-elements" element={<FormElements />} />
+
+          {/* Search Page */}
+          <Route path="/search" element={<SearchPage />} />
 
           {/* Tables */}
           <Route path="/basic-tables" element={<BasicTables />} />

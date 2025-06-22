@@ -4,6 +4,7 @@ import { Link, useLocation } from 'react-router';
 import { ChevronDownIcon, GridIcon, HorizontaLDots, ListIcon, PlugInIcon, TableIcon, UserCircleIcon } from '../icons';
 
 import { useSidebar } from '../context/SidebarContext';
+import { SearchIcon } from 'lucide-react';
 
 type NavItem = {
   name: string;
@@ -39,6 +40,12 @@ const navItems: NavItem[] = [
       { name: 'Petugas', path: '/akun/petugas' },
       { name: 'Pengguna', path: '/akun/pengguna' },
     ],
+  },
+
+  {
+    icon: <SearchIcon />,
+    name: 'Cari Laporan',
+    path: '/search',
   },
 ];
 

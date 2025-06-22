@@ -26,55 +26,60 @@ export default function SignInForm() {
       setLoading(false);
       return;
     }
-    console.log('Attempting login with:', { email, password }); // Tambahkan ini
+
+    console.log('🔐 Attempting login:', { email, password });
 
     try {
-      // 1. Coba login sebagai user Firebase (masyarakat)
-      await signInWithEmail(email, password); // <- gunakan helper dari firebase.ts
-      await auth.currentUser?.reload();
+      // 🔐 Login admin/petugas via backend
+      const adminResponse = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          email: email.trim(),
+          password: password.trim(),
+        }),
+      });
 
-      console.log('Firebase user:', auth.currentUser);
+      if (adminResponse.ok) {
+        const adminData = await adminResponse.json();
+        console.log('✅ Admin login success:', adminData);
 
-      const user = auth.currentUser;
-      localStorage.setItem('name', user?.displayName || user?.email || 'User');
-      localStorage.setItem('email', user?.email || '');
-      localStorage.setItem('provider', 'firebase');
-      localStorage.setItem('role', 'masyarakat');
-
-      navigate('/');
-    } catch (firebaseError) {
-      // 2. Kalau gagal login Firebase, coba ke backend (admin/petugas)
-      try {
-        const backendResponse = await fetch('http://localhost:5000/api/auth/login', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password }),
-        });
-
-        if (!backendResponse.ok) {
-          const errText = await backendResponse.text();
-          console.error('Backend Error:', errText);
-          throw new Error('Login backend gagal');
-        }
-
-        const data = await backendResponse.json();
-
-        localStorage.setItem('token', data.token);
-        localStorage.setItem('name', data.user.name);
-        localStorage.setItem('email', data.user.email);
-        localStorage.setItem('role', data.user.role);
+        localStorage.setItem('token', adminData.token);
+        localStorage.setItem('name', adminData.user.name);
+        localStorage.setItem('email', adminData.user.email);
+        localStorage.setItem('role', adminData.user.role);
         localStorage.setItem('provider', 'backend');
 
-        // Navigasi
-        if (data.user.role === 'admin' || data.user.role === 'petugas') {
-          navigate('/home');
-        } else {
-          navigate('/');
-        }
-      } catch (backendError) {
-        console.error('Login backend gagal:', backendError);
-        setError('Login gagal. Email atau password salah.');
+        navigate('/home');
+        return;
       }
+
+      // Jika user tidak ditemukan di backend → coba Firebase
+      if (adminResponse.status === 404) {
+        console.log('🔄 Trying Firebase user login...');
+        await signInWithEmail(email, password);
+        const user = auth.currentUser;
+
+        if (!user) throw new Error('User tidak ditemukan di Firebase.');
+
+        localStorage.setItem('name', user.displayName || user.email || 'User');
+        localStorage.setItem('email', user.email || '');
+        localStorage.setItem('provider', 'firebase');
+        localStorage.setItem('role', 'user');
+
+        navigate('/');
+        return;
+      }
+
+      // Jika password salah atau error lain
+      const errorRes = await adminResponse.json();
+      throw new Error(errorRes.message || 'Login gagal');
+    } catch (error) {
+      console.error('❌ Full login error:', error);
+      setError(error && typeof error === 'object' && 'message' in error ? (error as { message: string }).message : 'Login gagal. Periksa email dan password Anda.');
     } finally {
       setLoading(false);
     }
@@ -86,10 +91,6 @@ export default function SignInForm() {
         <Link to="/" className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300">
           <ChevronLeftIcon className="size-5" /> Back to Home
         </Link>
-      </div>
-
-      <div>
-        <p>adminrisky@gmail.com</p>
       </div>
 
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
