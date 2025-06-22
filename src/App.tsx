@@ -27,64 +27,49 @@ import Petugas from './pages/Petugas';
 import User from './pages/User';
 import AboutPage from './pages/AboutPage';
 import SearchPage from './pages/SearchPage';
+import ProtectedRoute from './components/auth/ProtectedRoute';
 
 export default function App() {
   return (
     <Router>
       <ScrollToTop />
       <Routes>
-        {/* ✅ Landing page di luar layout */}
+        {/* ✅ Public - Landing & Auth */}
         <Route index element={<LandingPage />} />
-
-        {/* ✅ Layout dashboard setelah login */}
-        <Route element={<AppLayout />}>
-          <Route path="/home" element={<Home />} />
-
-          {/* Others Page */}
-          <Route path="/about" element={<AboutPage />} />
-
-          {/* Pengaduan Routes */}
-          <Route path="/laporan" element={<SemuaLaporan />} />
-          <Route path="/tambah-laporan" element={<FormTambahLaporan />} />
-          <Route path="/riwayat" element={<RiwayatLaporan />} />
-          <Route path="/akun/petugas" element={<Petugas />} />
-          <Route path="/akun/pengguna" element={<User />} />
-          <Route path="/calendar" element={<Calendar />} />
-          <Route path="/blank" element={<Blank />} />
-
-          {/* Forms */}
-          <Route path="/form-elements" element={<FormElements />} />
-
-          {/* Search Page */}
-          <Route path="/search" element={<SearchPage />} />
-
-          {/* Tables */}
-          <Route path="/basic-tables" element={<BasicTables />} />
-
-          {/* UI Elements */}
-          <Route path="/alerts" element={<Alerts />} />
-          <Route path="/avatars" element={<Avatars />} />
-          <Route path="/badge" element={<Badges />} />
-          <Route path="/buttons" element={<Buttons />} />
-          <Route path="/images" element={<Images />} />
-          <Route path="/videos" element={<Videos />} />
-
-          {/* Charts */}
-          <Route path="/line-chart" element={<LineChart />} />
-          <Route path="/bar-chart" element={<BarChart />} />
-        </Route>
-
-        {/* ✅ Standalone Pengaduan Routes (outside dashboard layout) */}
-        <Route path="/pengaduan/*" element={<PengaduanRoutes />} />
-
-        {/* Auth Pages */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
-
-        {/* Logout Page */}
         <Route path="/logout" element={<Logout />} />
 
-        {/* Fallback */}
+        {/* ✅ Pengaduan user terbuka untuk masyarakat */}
+        <Route path="/pengaduan/*" element={<PengaduanRoutes />} />
+
+        {/* ✅ Protected Route: Hanya bisa diakses admin */}
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+          <Route element={<AppLayout />}>
+            <Route path="/home" element={<Home />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/laporan" element={<SemuaLaporan />} />
+            <Route path="/tambah-laporan" element={<FormTambahLaporan />} />
+            <Route path="/riwayat" element={<RiwayatLaporan />} />
+            <Route path="/akun/petugas" element={<Petugas />} />
+            <Route path="/akun/pengguna" element={<User />} />
+            <Route path="/calendar" element={<Calendar />} />
+            <Route path="/blank" element={<Blank />} />
+            <Route path="/form-elements" element={<FormElements />} />
+            <Route path="/search" element={<SearchPage />} />
+            <Route path="/basic-tables" element={<BasicTables />} />
+            <Route path="/alerts" element={<Alerts />} />
+            <Route path="/avatars" element={<Avatars />} />
+            <Route path="/badge" element={<Badges />} />
+            <Route path="/buttons" element={<Buttons />} />
+            <Route path="/images" element={<Images />} />
+            <Route path="/videos" element={<Videos />} />
+            <Route path="/line-chart" element={<LineChart />} />
+            <Route path="/bar-chart" element={<BarChart />} />
+          </Route>
+        </Route>
+
+        {/* Fallback Not Found */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>

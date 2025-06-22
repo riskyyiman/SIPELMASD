@@ -81,7 +81,7 @@ export default function LandingPage() {
               <Link to="/pengaduan/form" className="flex-1" onClick={handleReportClick}>
                 <Button className="w-full py-3 text-lg">Lapor Sekarang</Button>
               </Link>
-              <Link to="/pengaduan/daftar" className="flex-1">
+              <Link to="/pengaduan/daftar" className="flex-1" onClick={handleReportClick}>
                 <Button variant="outline" className="w-full py-3 text-lg">
                   Lihat Laporan
                 </Button>
