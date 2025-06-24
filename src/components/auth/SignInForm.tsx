@@ -30,8 +30,7 @@ export default function SignInForm() {
     console.log('🔐 Attempting login:', { email, password });
 
     try {
-      // 🔐 Login admin/petugas via backend
-      const adminResponse = await fetch('http://localhost:5000/api/auth/login', {
+      const adminResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
